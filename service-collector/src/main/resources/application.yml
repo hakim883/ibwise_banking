@@ -1,0 +1,33 @@
+server:
+  port: ${PORT:9003}
+
+spring:
+  application:
+    name: service-collector
+  jpa: 
+    properties:
+      hibernate:
+        formatSql: true
+        jdbc:
+          lob:
+            non-contextual-creation: true
+    databasePlatform: org.hibernate.dialect.MariaDBDialect
+    show-sql: false 
+    hibernate: 
+      ddlAuto: update 
+      naming:
+        implicitStrategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+  datasource: 
+    url: jdbc:mysql://localhost:3306/ibwise 
+    username: root 
+    password: rootroot 
+    driverClassName: org.mariadb.jdbc.Driver
+ 
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka
+ 
+ 

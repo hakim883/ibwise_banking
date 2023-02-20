@@ -1,0 +1,50 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: service-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ServiceParameterModule
+          uri: lb://SERVICE-PARAMETER
+          predicates:
+          - Path=/ibwise/core/api/v1/param/**
+        - id: ServiceSchedulerModule
+          uri: lb://SERVICE-SCHEDULER
+          predicates:
+          - Path=/ibwise/core/api/v1/scheduler/**
+        - id: ServiceCollectorModule
+          uri: lb://SERVICE-COLLECTOR
+          predicates:
+          - Path=/ibwise/core/api/v1/collector/**
+        - id: ServiceAnalyzerModule
+          uri: lb://SERVICE-ANALYZER
+          predicates:
+          - Path=/ibwise/core/api/v1/analyzer/**
+        - id: ServicePresenterModule
+          uri: lb://SERVICE-PRESENTER
+          predicates:
+          - Path=/ibwise/core/api/v1/presenter/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka
+
+# Increase the Hystrix timeout to 60s (globally)
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
